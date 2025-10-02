@@ -13,7 +13,7 @@ from kb import public_post_kb
 
 load_dotenv()
 
-TARGET_CHAT_ID = os.getenv("TARGET_CHAT_ID")
+ADMIN_ID = os.getenv("ADMIN_ID")
 
 async def login_instagram(username, password, bot: Bot):
     """Авторизация в Instagram"""
@@ -41,7 +41,7 @@ async def login_instagram(username, password, bot: Bot):
             return True
             
         except Exception as e:
-            await bot.send_message(os.getenv("TARGET_CHAT_ID"), "❌ Ошибка авторизации")
+            await bot.send_message(ADMIN_ID, "❌ Ошибка авторизации")
             os.remove("inst_profile")
             return False
         finally:
@@ -73,7 +73,7 @@ async def inst_parse(bot: Bot):
     while True:
      
         if not os.path.exists("inst_profile"):
-                await bot.send_message(os.getenv("TARGET_CHAT_ID"), "❌ Профиль Instagram не найден")
+                await bot.send_message(ADMIN_ID, "❌ Профиль Instagram не найден")
                 await asyncio.sleep(60)
                 continue
         async with async_playwright() as p:
@@ -87,9 +87,9 @@ async def inst_parse(bot: Bot):
                     
                     os.makedirs('downloads', exist_ok=True)
                     profiles = await get_instagram_profile()
-                    print(profiles)
+                    
                     if not profiles:
-                        await bot.send_message(os.getenv("TARGET_CHAT_ID"), "❌ Пустой список аккаунтов")
+                        await bot.send_message(ADMIN_ID, "❌ Пустой список аккаунтов")
                         await asyncio.sleep(60)
                         continue
                     
@@ -136,7 +136,7 @@ async def inst_parse(bot: Bot):
                                     if success:
                                         video_path = 'downloads/instagram_video.mp4'
                                         video = FSInputFile(video_path)
-                                        await bot.send_video(chat_id=os.getenv("TARGET_CHAT_ID"), video=video, caption=title, reply_markup=public_post_kb())
+                                        await bot.send_video(chat_id=ADMIN_ID, video=video, caption=title, reply_markup=public_post_kb())
                                         await asyncio.sleep(3)
                                         os.remove('downloads/instagram_video.mp4')
                                         await save_instagram_post(post_url)
@@ -159,7 +159,7 @@ async def inst_parse(bot: Bot):
                                                 with open('downloads/photo.jpg', 'wb') as f:
                                                     f.write(content)
                                                 photo = FSInputFile('downloads/photo.jpg')
-                                                await bot.send_photo(chat_id=os.getenv("TARGET_CHAT_ID"), photo=photo, caption=title, reply_markup=public_post_kb())
+                                                await bot.send_photo(chat_id=ADMIN_ID, photo=photo, caption=title, reply_markup=public_post_kb())
                                                 await asyncio.sleep(3)
                                                 await save_instagram_post(post_url)
                                                 os.remove('downloads/photo.jpg')
@@ -168,7 +168,7 @@ async def inst_parse(bot: Bot):
                     
                     
             except Exception as e:
-                await bot.send_message(os.getenv("TARGET_CHAT_ID"), f"Ошибка: {e}")
+                await bot.send_message(ADMIN_ID, f"Ошибка: {e}")
         
         await asyncio.sleep(300)
         

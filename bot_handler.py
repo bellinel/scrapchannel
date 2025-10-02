@@ -17,7 +17,7 @@ load_dotenv()
 
 bot_router = Router()
 
-TARGET_CHANNEL = os.getenv("TARGET_CHANNEL")
+ADMIN_ID = os.getenv("ADMIN_ID")
 
 
 

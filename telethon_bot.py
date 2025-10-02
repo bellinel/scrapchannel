@@ -15,7 +15,8 @@ load_dotenv()
 API_ID = os.getenv("API_ID")
 API_HASH = os.getenv("API_HASH")
 
-TARGET_CHAT_ID = os.getenv("TARGET_CHAT_ID")
+
+ADMIN_ID = os.getenv("ADMIN_ID")
 
 
 
@@ -56,21 +57,21 @@ def register_telethon_handlers(client, bot: Bot):
             return
         # --- Текст ---
         if msg.text and not msg.media:
-            await bot.send_message(TARGET_CHAT_ID, msg.text)
+            await bot.send_message(ADMIN_ID, msg.text)
 
         # --- Фото ---
         elif msg.photo:
             data = await msg.download_media(file=bytes)
             photo = BufferedInputFile(data, filename="image.jpg")
             caption = msg.text or ""
-            await bot.send_photo(TARGET_CHAT_ID, photo, caption=caption)
+            await bot.send_photo(ADMIN_ID, photo, caption=caption)
 
         # --- Видео ---
         elif msg.video:
             data = await msg.download_media(file=bytes)
             video = BufferedInputFile(data, filename="video.mp4")
             caption = msg.text or ""
-            await bot.send_video(TARGET_CHAT_ID, video, caption=caption)
+            await bot.send_video(ADMIN_ID, video, caption=caption)
 
     # --- альбомы (медиагруппы) ---
     @client.on(events.Album())
@@ -102,4 +103,4 @@ def register_telethon_handlers(client, bot: Bot):
                 
         print(media_group)
         if media_group:
-            await bot.send_media_group(TARGET_CHAT_ID, media_group)
+            await bot.send_media_group(ADMIN_ID, media_group)

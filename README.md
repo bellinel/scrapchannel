@@ -68,8 +68,8 @@ API_HASH=your_api_hash
 PHONE_NUMBER=+1234567890
 
 # ID целевого канала для пересылки контента
-TARGET_CHANNEL=@your_channel_username
-TARGET_CHAT_ID=-1001234567890
+ADMIN_ID=442341213
+TARGET_CHANNEL=-1001234567890
 
 ```
 

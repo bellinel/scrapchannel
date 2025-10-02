@@ -13,7 +13,7 @@ from db import save_tweet, tweet_exists, get_twitter_profile
 load_dotenv()
 
 SAVE_FOLDER = "tweets_media"
-TARGET_CHAT_ID = os.getenv("TARGET_CHAT_ID")
+ADMIN_ID = os.getenv("ADMIN_ID")
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
 
@@ -49,7 +49,7 @@ async def login_twitter(login, user_name, password, bot: Bot):
             return True
            
         except Exception as e:
-            await bot.send_message(int(TARGET_CHAT_ID), "Не удалось авторизоваться")
+            await bot.send_message(int(ADMIN_ID), "Не удалось авторизоваться")
             await context.close()
             os.remove("X_profile")
             return False
@@ -58,7 +58,7 @@ async def login_twitter(login, user_name, password, bot: Bot):
 async def parse_twitter(bot: Bot):
     while True:
         if not os.path.exists("X_profile"):
-            await bot.send_message(os.getenv("TARGET_CHAT_ID"), "❌ Профиль Twitter не найден")
+            await bot.send_message(ADMIN_ID, "❌ Профиль Twitter не найден")
             await asyncio.sleep(30)
             continue
         async with async_playwright() as p:
@@ -70,7 +70,7 @@ async def parse_twitter(bot: Bot):
             
             urls = await get_twitter_profile()
             if not urls:
-                await bot.send_message(os.getenv("TARGET_CHAT_ID"), "❌ Пустой список аккаунтов Twitter")
+                await bot.send_message(ADMIN_ID, "❌ Пустой список аккаунтов Twitter")
                 await asyncio.sleep(60)
                 continue
             for url in urls:
@@ -114,7 +114,7 @@ async def parse_twitter(bot: Bot):
                                 ydl.download([get_url])
                             print("Видео сохранено")    
                             file = FSInputFile(os.path.join(SAVE_FOLDER, "tweet_video.mp4"))
-                            await bot.send_video(int(TARGET_CHAT_ID), file, caption=text_tweet, reply_markup=public_post_kb())
+                            await bot.send_video(ADMIN_ID, file, caption=text_tweet, reply_markup=public_post_kb())
                             os.remove(os.path.join(SAVE_FOLDER, "tweet_video.mp4"))
                             break
                                 
@@ -126,11 +126,11 @@ async def parse_twitter(bot: Bot):
                                 f.write(response.content)
                             print("Изображение сохранено")
                             file = FSInputFile(os.path.join(SAVE_FOLDER, "tweet_image.jpg"))    
-                            await bot.send_photo(int(TARGET_CHAT_ID), file, caption=text_tweet, reply_markup=public_post_kb())
+                            await bot.send_photo(ADMIN_ID, file, caption=text_tweet, reply_markup=public_post_kb())
                             os.remove(os.path.join(SAVE_FOLDER, "tweet_image.jpg"))
                             break
                         
-                        await bot.send_message(int(TARGET_CHAT_ID), text_tweet, reply_markup=public_post_kb())
+                        await bot.send_message(ADMIN_ID, text_tweet, reply_markup=public_post_kb())
                         break
                 
                     
