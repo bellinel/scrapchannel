@@ -71,13 +71,6 @@ PHONE_NUMBER=+1234567890
 TARGET_CHANNEL=@your_channel_username
 TARGET_CHAT_ID=-1001234567890
 
-# Настройки Instagram (опционально)
-INSTAGRAM_USERNAME=your_instagram_username
-INSTAGRAM_PASSWORD=your_instagram_password
-
-# Настройки Twitter (опционально)
-TWITTER_USERNAME=your_twitter_username
-TWITTER_PASSWORD=your_twitter_password
 ```
 
 ### 2. Получение Telegram API данных
